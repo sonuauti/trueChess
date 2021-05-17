@@ -13,9 +13,8 @@ What it does not do?
 
 Screenshots desktop
 
-- Black Theme
-![Wooden Theme](https://github.com/sonuauti/iChess/blob/main/black_theme.png?v=4&s=400)
-![Wooden Theme](https://github.com/sonuauti/iChess/blob/main/wood_theme.png?v=4&s=400)
+![Wooden Theme](https://github.com/sonuauti/iChess/blob/main/wood_black_theme.png)
+
 
 Design, Build, Tested by   
 Twitter , Github /@sonuauti
