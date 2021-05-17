@@ -13,7 +13,7 @@ What it does not do?
 
 Screenshots desktop
 
-![Wooden Theme](https://github.com/sonuauti/iChess/blob/main/black_theme.png | width=400)
+![Wooden Theme](https://github.com/sonuauti/iChess/blob/main/black_theme.png?s=400)
 
 Design, Build, Tested by   
 Twitter , Github /@sonuauti
