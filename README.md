@@ -11,6 +11,9 @@ Features supported
 What it does not do?
 - Computer player not supported
 
+Screenshots desktop
+
+![Wooden Theme](https://github.com/sonuauti/iChess/blob/main/black_theme.png | width=400)
 
 Design, Build, Tested by   
-twitter , github /@sonuauti
+Twitter , Github /@sonuauti
