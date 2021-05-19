@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>iChess | Chess for novice</title>
+	  <meta charset="UTF-8">
+	  <meta name="description" content="Free Web tutorials">
+	  <meta name="keywords" content="iChess, chess game, game, board, pawn, king, knight, rook, bishop, chess board, white pawn, black pawn">
+	  <meta name="author" content="Sonu Auti">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+	<style type="text/css">
+		:root{
+			--cell1:#779556;
+			--cell2:#ebecd0;
+			--abort:#ff00006f;
+			--draw:#999;
+			--resign:#ffd7009f;
+			--cellhw:60px;
+			--theme_wood:#B06328;
+			--theme_darkwood:#855F38;
+			--theme_pink:#FF576B;
+			--theme_vibrant:#F25A04;
+			--theme_black:#222222;
+			--theme_default:#779556;
+			--borad_border:#444;
+		}
+
+		#startBtn:hover{
+			background: #95BB4A !important;
+		}
+		.btn{
+			font-size: 16px;border-radius: 8px;border: none;width: 120px;height: 50px;color: #fff;font-weight: bold;letter-spacing: 2px;margin: 10px;
+		}
+		
+		.themes{
+			max-width: 20px;min-width: 15px;min-height: 15px;border-radius: 15px;padding: 4px;margin: 10px;
+		}
+		.evenCol{
+			display: inline-block;
+			background-color: var(--cell2);
+			padding: 4px;
+		}
+		.oddCol{
+			display: inline-block;
+			background-color: var(--cell1);
+			padding: 4px;
+		}
+		.cell{
+			font-size: 14px;
+			padding: 4px;
+			overflow: hidden;
+			text-align: center;
+			min-width: var(--cellhw);
+			min-height: var(--cellhw);
+			max-width: var(--cellhw);
+			max-height: var(--cellhw);
+		}
+		.boardBg{
+			box-shadow: 0px 2px 5px 4px #ccc;
+			border-radius: 5px;
+			padding: 10px;
+		}
+
+		#controls{
+			margin: 5px;
+			max-width: 100%;
+			text-align: center;
+		}
+
+
+	</style>
+	<script type="text/javascript">
+
+	const memoryBank = new Array(8).fill(0).map(() => new Array(8).fill(0));
+	const  pieces=["king","queen","bishop","knight","rook","pawn"];	
+	const  ruleBook={
+			"king":{"moves":["step_fw","step_bw","step_dig","step_left","step_right"],"step_size_max":"1","step_size_min":"1"},
+			"queen":{"moves":["step_fw","step_bw","step_dig","step_left","step_right"],"step_size_max":"n","step_size_min":"1"},
+			"bishop":{"moves":["step_dig"],"step_size_max":"n","step_size_min":"1"},
+			"knight":{"moves":["step_knight"],"step_size_max":"3","step_size_min":"3"},
+			"rook":{"moves":["step_fw","step_bw","step_left","step_right"],"step_size_max":"n","step_size_min":"1"},
+			"pawn":{"moves":["step_fw","step_dig"],"step_size_max":"2","step_size_min":"1"}
+			};
+	const uniCodeSym={'wking':'&#9812;','wqueen':'&#9813;','wbishop':'&#9815;','wknight':'&#9816;','wrook':'&#9814;','wpawn':'&#9817;','bking':'&#9818;','bqueen':'&#9819;','bbishop':'&#9821;','bknight':'&#9822;','brook':'&#9820;','bpawn':'&#9823;'};		
+	
+	//console.log(uniCodeSym['king']);
+
+	function updateCssPro(key,value){
+		  var root_ = document.querySelector(':root');
+		  var rs = getComputedStyle(root_);
+		  root_.style.setProperty(key,value);
+	}
+
+	function updateTheme(value){
+
+		  var root_ = document.querySelector(':root');
+		  var rs = getComputedStyle(root_);
+		  //alert("The value of --blue is: " + rs.getPropertyValue('--blue'));
+		  root_.style.setProperty('--cell1',value);
+		  window.localStorage['btheme']=value;
+	}	
+
+	function createControls(){
+		var controls=document.getElementById("controls");
+	}	
+	
+
+	function createChessBoard(boardId,config){
+
+		if (window.localStorage['btheme']) {
+			updateTheme(window.localStorage['btheme']);
+		}else{
+			updateTheme(config.boardTheme);
+		}
+
+		var chessboard=document.getElementById(boardId);
+		var table=document.createElement('div');
+		
+		//table.className='boardBg';
+		//table.setAttribute('border', '0');
+		//table.setAttribute('cellspacing',"0");
+		//table.setAttribute('cellpadding',"0");
+		chessboard.appendChild(table);
+		
+		//check the width of main div and calculate the cell size
+
+		var hw = chessboard.style.width.split("px")[0];
+		if (hw<150) {
+			hw=150;
+			chessboard.style.width='150px';
+		}
+		console.log(hw);
+		updateCssPro('--cellhw',((hw/8)-16)+"px");
+
+		
+		var maxRowCol=8;
+		var notationNum=8;
+		var aplhas=['a','b','c','d','e','f','g','h'];
+		for (var row = 0; row <maxRowCol; row++) {
+			var tr=document.createElement('div');
+			tr.style.marginTop="-1px";
+			table.appendChild(tr);
+			for (var col = 0; col <maxRowCol; col++) {
+				var td=document.createElement('div');
+				td.setAttribute("id",("p"+row+""+col))
+
+
+				if (row%2==0) {
+					if (col%2==0) {
+						td.className = 'evenCol';
+					}else{
+						td.className = 'oddCol';
+					}
+				}else{
+					if (col%2==0) {
+						td.className = 'oddCol';
+					}else{
+						td.className = 'evenCol';
+					}
+				}
+
+				var notationVerticals='';
+				var notationHorizontal='';
+				var notationColor='gray';
+
+				if(config.showBoardNotations==true){
+					if (col==0) {
+						notationVerticals=notationNum--;
+					}
+					if (row==7) {
+						notationHorizontal=aplhas[col];
+					}
+					if (td.className=='evenCol') {
+						notationColor='var(--cell1);';
+					}else{
+						notationColor='var(--cell2);';
+					}
+				}
+
+				
+				var piecesType = 'na';
+				if (row==0 || row ==1) {
+					piecesType='b';
+				}else if (row==7 || row ==6) {
+					piecesType='w';	
+				}
+
+				var pieceName=getInitialPos(row,col);
+				memoryBank[row][col]=pieceName+","+piecesType;
+
+				var unicode='';
+				var imgStyle='';
+				if(config.displayUnicodeSymbols){
+					
+						unicode='<span style="font-size: 63px;text-align: center;">'+uniCodeSym[(piecesType+pieceName)]+'</span>';
+						
+				}else{
+					var imgName=config.imgSrc+(piecesType+pieceName)+".png";
+					imgStyle='"font-size:16px;background: url(\''+imgName+'\');background-repeat: no-repeat;background-size: contain;text-align:left;"';
+				}
+
+				if (piecesType!='na') {
+					
+					td.innerHTML='<div draggable="true" ondragstart="dragStart(event);" id="'+(row+""+col)+'" class="cell animated" onclick="onCellTap(this.id,'+row+','+col+');" style='+imgStyle+'><span style="color:'+notationColor+'">'+notationVerticals+'</span><span style="float:right;color:'+notationColor+'">'+notationHorizontal+'</span>'+unicode+'</div>';
+				}else{
+					td.innerHTML='<div ondrop="drop(event);" ondragover="allowDrop(event);" id="'+(row+""+col)+'"  class="cell animated" style="font-size:16px;padding:4px;text-align:left;" onclick="onCellTap(this.id,'+row+','+col+');"><span style="color:'+notationColor+'">'+notationVerticals+'</span><span style="float:right;color:'+notationColor+'">'+notationHorizontal+'</span></div>';
+				}
+
+				tr.appendChild(td);
+			}	
+		}
+
+	}
+
+	function getInitialPos(row,col){
+
+		//this is for rook
+		if ( (row==0 && col==0) || (row == 7 && col==0) || (row==0 && col==7) || (row==7 && col==7) ) {
+			return pieces[4];
+		}
+		//this is for knight
+		if ((row == 0 && col ===1) || (row == 7 && col==1) || (row==0 && col==6) || (row==7 && col==6)) {
+			return pieces[3];
+		}
+		//this is bishop
+		if ((row == 0 && col ===2) || (row == 7 && col==2) || (row==0 && col==5) || (row==7 && col==5)) {
+			return pieces[2];
+		}
+
+		//this is for queen
+		if ((row == 0 && col ===3) || (row == 7 && col==3)) {
+			return pieces[1];
+		}
+		//this if king
+		if ((row == 0 && col ===4) || (row == 7 && col==4)) {
+			return pieces[0];
+		}
+
+		//this if for pawn
+		if (row==1 || row==6) {
+			return pieces[5];	
+		}else{
+			return "na";
+		}
+		
+	}
+
+	
+	function dragStart(event) {
+	  //	event.dataTransfer.setData("background", document.getElementById(event.target.id).style.background);
+	  	//document.getElementById(event.target.id).style.background='none';
+	}
+
+	function dragging(event) {
+	  //document.getElementById("demo").innerHTML = "The p element is being dragged";
+	}
+
+	function allowDrop(event) {
+	  event.preventDefault();
+	}
+
+	function drop(event) {
+	  event.preventDefault();
+	  //var data = event.dataTransfer.getData("background");
+	  //document.getElementById(event.target.id).style.background=data;
+	}
+
+	function animateView(viewId,animateClass){
+		var e=document.getElementById(viewId);
+		e.classList.add(animateClass);
+		setTimeout(function() {
+			e.classList.remove(animateClass);
+		}, 100);
+	}
+
+
+	function onCellTap(eleId,row,col){
+		//console.log(pieceName+","+r+","+c+","+piecesType+", "+eleId);
+		animateView(eleId,'bounceIn');
+		//var data=document.getElementById(eleId).getAttribute("data").split(",");
+		//var pieceName=data[0];
+		//var r=data[1];
+		//var c=data[2];
+		//var piecesType=data[3];
+		checkRule(row,col,eleId);
+	}
+
+
+	function udpateCell(eleId,data){
+		document.getElementById(eleId).style.background=data;
+	}	
+
+	function isKingCheck(){
+
+	}
+
+	var moves={start:false,end:false,ptype:'na',piecesType:'na',row:-1,col:-1,startId:'',endId:'',data:''};
+	function checkRule(r,c,eleId){
+		
+		//console.log('into:'+memoryBank[r][c]+","+r+","+c);
+		
+		var pieceName=memoryBank[r][c].split(",")[0];
+		var piecesType=memoryBank[r][c].split(",")[1];
+
+		if (pieceName!="na" && moves.start==false) {
+			console.log('first tap at '+memoryBank[r][c]);
+			moves.start=true;
+			moves.end=false;
+			moves.ptype=pieceName;
+			moves.piecesType=piecesType;
+			moves.row=r;
+			moves.col=c;
+			moves.startId=eleId;
+			moves.data=document.getElementById(moves.startId).style.background;
+		}else if (moves.end==false &&  (pieceName=="na" || pieceName=='pawn')) {
+			console.log('second tap at '+pieceName);
+			
+			memoryBank[r][c]=moves.ptype+","+moves.piecesType;
+			memoryBank[moves.row][moves.col]='na,na';
+			moves.endId=eleId;
+			console.log('updated position at '+memoryBank[r][c]);
+			udpateCell(moves.startId,document.getElementById(moves.endId).style.background);
+			udpateCell(moves.endId,moves.data);
+			
+			moves={start:false,end:true,ptype:'na',row:-1,col:-1,startId:'',endId:'',data:''};
+		}else {
+			console.log('read the rules, can not move');
+		}
+
+		/*switch(pieceName){
+			case "king":
+				
+			break;
+
+			case "queen":
+			break;
+
+			case "bishop":
+			break;
+
+			case "knight":
+			break;
+
+			case "rook":
+			break;
+
+			case "pawn":
+				
+			break;
+
+			default:
+					
+			break;
+		} */
+	}
+
+
+	function initiChess(){
+		var config = {
+			showBoardNotations:false,
+			position:'begin',
+			orientation:'default',
+			isDraggable:false,
+			isFocus:false,
+			boardTheme:'theme_default',
+			showClock:true,
+			gameTime:'10',
+			imgSrc:'img/new/',
+			displayUnicodeSymbols:false
+		}
+		createChessBoard('chessBoard1',config);
+		createChessBoard('chessBoard2',config);
+		createChessBoard('chessBoard3',config);
+		createChessBoard('chessBoard4',config);
+		createChessBoard('chessBoard5',config);
+		createChessBoard('chessBoard6',config);
+	}
+	
+</script>
+</head>
+
+<body style="text-align: center;font-size: 16px;" onload="initiChess();">
+
+	<div id="chessBoard1" style="width: 200px;float: left;margin: 5px;"> </div>
+	<div id="chessBoard2" style="width: 200px;float: left;margin: 5px;"> </div>
+	<div id="chessBoard3" style="width: 200px;float: left;margin: 5px;"> </div>
+	<div id="chessBoard4" style="width: 200px;float: left;margin: 5px;"> </div>
+	<div id="chessBoard5" style="width: 200px;float: left;margin: 5px;"> </div>
+	<div id="chessBoard6" style="width: 200px;float: left;margin: 5px;"> </div>
+	
+	<div style="float: left; box-shadow: 0px 0px 2px 2px #eee;border-radius: 10px;margin-left: 12px;display: none;">
+		<div  id="theme_wood" class="themes animated" style="background: var(--theme_wood);" onclick="updateTheme(document.getElementById(this.id).style.background);"></div>
+		<div  id="theme_darkwood" class="themes animated" style="background: var(--theme_darkwood);" onclick="updateTheme(document.getElementById(this.id).style.background);"></div>
+		<div id="theme_pink" class="themes animated" style="background: var(--theme_pink);" onclick="updateTheme(document.getElementById(this.id).style.background);"></div>
+		<div  id="theme_vibrant" class="themes animated" style="background: var(--theme_vibrant);" onclick="updateTheme(document.getElementById(this.id).style.background);"></div>
+		<div  id="theme_default" class="themes animated" style="background: var(--theme_default);" onclick="updateTheme(document.getElementById(this.id).style.background);"></div>
+		<div  id="theme_black" class="themes animated" style="background: var(--theme_black);" onclick="updateTheme(document.getElementById(this.id).style.background);"></div>
+	</div>
+
+	<div id="controls" style="visibility: hidden;">
+		<div>
+		
+			<button class="btn animated" id="startBtn" style="background: var(--cell1);" onclick="startGame(this.id)">START</button>
+
+			<button class="btn animated" id="drawBtn" style="background: var(--draw);" onclick="stopGame(this.id)">&#189; DRAW</button>
+
+			<button class="btn animated" id="resignBtn" style="background: var(--resign);" onclick="startGame(this.id)">RESIGN</button>
+
+			<button style="background: var(--abort);" id="abortBtn" class="btn animated" onclick="stopGame(this.id)">ABORT</button>
+
+		</div>
+	</div>
+
+</body>
+</html>
