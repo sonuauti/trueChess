@@ -9,7 +9,7 @@ Features supported
 - Min board size 150px, can create multiple chess board.
 
 
-##Getting started
+## Getting started
 
 1.  Add/link following files
 ```java
@@ -43,19 +43,18 @@ var config = {
  
 4.  That's it !
 
-#Position property
+## Position property
 
 position property in config support following inputs
 
-	```java
-	var config = {position:"start"}
-
-	var config= {position: {board_notation:'picesType+picesName'} }
+```java
+var config = {position:"start"};
+var config= {position: {board_notation:'picesType+picesName'} };
+```
 	
-	d4 - is the board notation
-	w  - white
-	pawn - name 
-	```
+d4 - board notation
+wpawn  - white pawn
+
 
 
 Demo screenshot
