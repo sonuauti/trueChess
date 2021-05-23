@@ -1,0 +1,161 @@
+:root{
+			--cell1:#779556;
+			--cell2:#ebecd0;
+			--abort:#ff00006f;
+			--draw:#999;
+			--resign:#ffd7009f;
+			--cellhw:60px;
+			--theme_wood:#B06328;
+			--theme_darkwood:#855F38;
+			--theme_pink:#FF576B;
+			--theme_vibrant:#F25A04;
+			--theme_black:#222222;
+			--theme_default:#779556;
+			--borad_border:#444;
+
+			
+			--wking:url('img/wking.png');
+			--wqueen:url('img/wqueen.png');
+			--wbishop:url('img/wbishop.png');
+			--wknight:url('img/wknight.png');
+			--wrook:url('img/wrook.png');
+			--wpawn:url('img/wpawn.png');
+			--bking:url('img/bking.png');
+			--bqueen:url('img/bqueen.png');
+			--bbishop:url('img/bbishop.png');
+			--bknight:url('img/bknight.png');
+			--brook:url('img/brook.png');
+			--bpawn:url('img/bpawn.png');
+		}
+
+		#startBtn:hover{
+			background: #95BB4A !important;
+		}
+		.btn{
+			font-size: 16px;border-radius: 8px;border: none;width: 120px;height: 50px;color: #fff;font-weight: bold;letter-spacing: 2px;margin: 10px;
+		}
+		
+		.themes{
+			max-width: 20px;
+			min-width: 15px;
+			min-height: 15px;
+			border-radius: 15px;
+			padding: 4px;
+			margin: 10px;
+			display: inline-block !important;
+		}
+		.evenCol{
+			display: inline-block;
+			background-color: var(--cell2);
+			padding: 4px;
+		}
+		.oddCol{
+			display: inline-block;
+			background-color: var(--cell1);
+			padding: 4px;
+		}
+		.cell{
+			font-size: 14px;
+			padding: 4px;
+			overflow: hidden;
+			text-align: center;
+			min-width: var(--cellhw);
+			min-height: var(--cellhw);
+			max-width: var(--cellhw);
+			max-height: var(--cellhw);
+		}
+		.boardBg{
+			box-shadow: 0px 2px 5px 4px #ccc;
+			border-radius: 5px;
+			padding: 10px;
+		}
+
+		#controls{
+			margin: 5px;
+			max-width: 100%;
+			text-align: center;
+		}
+
+		.wking{
+			background: var(--wking);
+			background-repeat: no-repeat;
+			background-size: contain;
+			text-align:left;
+		}
+		.wqueen{
+			background: var(--wqueen);
+			background-repeat: no-repeat;
+			background-size: contain;
+			text-align:left;
+		}
+		.wbishop{
+			background: var(--wbishop);
+			background-repeat: no-repeat;
+			background-size: contain;
+			text-align:left;
+		}
+		.wknight{
+			background: var(--wknight);
+			background-repeat: no-repeat;
+			background-size: contain;
+			text-align:left;
+		}
+		.wrook{
+			background: var(--wrook);
+			background-repeat: no-repeat;
+			background-size: contain;
+			text-align:left;
+		}
+		.wpawn{
+			background: var(--wpawn);
+			background-repeat: no-repeat;
+			background-size: contain;
+			text-align:left;
+		}
+
+		.bking{
+			background: var(--bking);
+			background-repeat: no-repeat;
+			background-size: contain;
+			text-align:left;
+		}
+		.bqueen{
+			background: var(--bqueen);
+			background-repeat: no-repeat;
+			background-size: contain;
+			text-align:left;
+		}
+		.bbishop{
+			background: var(--bbishop);
+			background-repeat: no-repeat;
+			background-size: contain;
+			text-align:left;
+		}
+		.bknight{
+			background: var(--bknight);
+			background-repeat: no-repeat;
+			background-size: contain;
+			text-align:left;
+		}
+		.brook{
+			background: var(--brook);
+			background-repeat: no-repeat;
+			background-size: contain;
+			text-align:left;
+		}
+		.bpawn{
+			background: var(--bpawn);
+			background-repeat: no-repeat;
+			background-size: contain;
+			text-align:left;
+		}
+
+		.hnotations{
+			font-size: 13px;
+			float: right;
+			margin-top: 75%;
+		}
+		.vnotations{
+			font-size: 13px;
+			float: left;
+		}

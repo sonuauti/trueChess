@@ -8,14 +8,14 @@
 	  <meta name="author" content="Sonu Auti @sonuauti">
 	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"> <!-- required for animation if set false then not required-->
-	  <link rel="stylesheet" href="style.css"> <!-- color and style information -->
-	  <script type="text/javascript" src="truechess.js"> </script> <!--  main js file -->
+	  <link rel="stylesheet" href="../style.css"> <!-- color and style information -->
+	  <script type="text/javascript" src="../truechess.js"> </script> <!--  main js file -->
 	
 </head>
 
 <body style="text-align: center;font-size: 16px;">
 
-	<div id="chessBoard1" style="width: 500px; margin: auto;"> </div>
+	<div id="chessBoard" style="width: 500px; margin: auto;"> </div>
 	
 	<div style="box-shadow: 0px 0px 2px 2px #eee;
 	border-radius: 10px;margin-left: 12px;display: inline-block;margin-top: 10px;">
@@ -32,22 +32,15 @@
 		function initiChess(){
 		var config = {
 			showBoardNotations:true,	//show board notations 1-8, a-f
-			position:"start",  // either start or position array
-			orientation:'default',			//top side down
-			isDraggable:false,				//drag element
-			isFocus:false,					//
-			boardTheme:'theme_default',		//board color
-			showClock:true,				//hide or show clock
-			gameTime:'10',				//game time
-			imgSrc:'img/',				//absolute path of icons
-			displayUnicodeSymbols:false, //display web friendly icons
-			showCapturedPieces:true,	//show captured pieces
+			position:{d6: 'bking', d4: 'wpawn', e4: 'wking',a1:'wrook',a8:'brook',b4:'wqueen'},  // either start or position array
+			isDraggable:false,				//drag element			
+			boardTheme:'theme_wood',		//board color
+			imgSrc:'img/new/',				//absolute path of icons
 			showBoardWithPieces:true,	//show board only
 			animation:true 				//show animation 
 		}
-
 		
-		createChessBoard('chessBoard1',config);
+		createChessBoard('chessBoard',config);
 	}
 	initiChess();
 	</script>
