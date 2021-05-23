@@ -159,8 +159,10 @@ const memoryBank = new Array(9).fill(0).map(() => new Array(9).fill(0));
 				
 					if (pieceName!='no') {
 						var real_div=document.createElement("div");
-						real_div.setAttribute("draggable","true");
-						real_div.setAttribute("ondragstart","dragStart(event);");
+						if (config.lockMoves!=true) {
+							real_div.setAttribute("draggable","true");
+							real_div.setAttribute("ondragstart","dragStart(event);");
+						}
 
 						if (config.displayUnicodeSymbols==true) {
 							updateCssPro("--wrook",uniCodeSym[pieceName]);
@@ -187,8 +189,13 @@ const memoryBank = new Array(9).fill(0).map(() => new Array(9).fill(0));
 							real_div.className='cell animated';	
 						}
 					}
+
 					real_div.setAttribute("id",(acol+"_"+ntrow));
-					real_div.setAttribute("onclick","onCellTap(this.id,'"+acol+""+ntrow+"')");
+					if (config.lockMoves!=true) {
+						real_div.setAttribute("onclick","onCellTap(this.id,'"+acol+""+ntrow+"')");
+					}else{
+						real_div.setAttribute("draggable","false");
+					}
 					
 					if (config.showBoardNotations) {
 						

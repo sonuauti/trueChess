@@ -22,19 +22,20 @@ Features supported
   <div id="chessBoard1" style="width: 500px; margin: auto;"> </div>
 ```
 
-3.  Call create board function after the page load
+3.  Call createChessBoard function, after the page load
 
 ```java
   var config = {
-			showBoardNotations:true,		//show board notations 1-8, a-f
+			showBoardNotations:true,				//show board notations 1-8, a-f
 			position:{d6: 'bking', d4: 'wpawn',
 			e4: 'wking',a1:'wrook',a8:'brook'},     // either "start" or position object
-			isDraggable:false,			//drag element			
-			boardTheme:'theme_wood',		//board color
-			imgSrc:'img/',				//absolute path of icons
-			showBoardWithPieces:true,		//show board only
-			animation:true, 			//show animation 
-			showBorder:false,
+			isDraggable:false,						//drag element			
+			boardTheme:'theme_wood',				//board color
+			imgSrc:'img/',							//directory path of icons
+			showBoardWithPieces:true,				//show board only
+			animation:true, 						//show animation 
+			showBorder:false,						//show black border around the board
+			lockMoves:false							//lock the moment of piceses
 	       }
 		
 		createChessBoard('chessBoard',config);
@@ -43,10 +44,10 @@ Features supported
 4.  That's it !
 
 
-Screenshots desktop
+Demo screenshot
 
 ![Wooden Theme](https://github.com/sonuauti/iChess/blob/main/wood_black_theme.png)
 
 
 Design, Build, Tested by   
-Twitter , Github /@sonuauti
+Twitter/Github /sonuauti
