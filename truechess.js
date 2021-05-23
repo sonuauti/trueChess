@@ -65,6 +65,10 @@ const memoryBank = new Array(9).fill(0).map(() => new Array(9).fill(0));
 		}
 
 		var chessboard=document.getElementById(boardId);
+
+		if (config.showBorder==true) {
+			chessboard.style.border="2px solid #444";
+		}
 		
 		var table=document.createElement('div');
 		chessboard.appendChild(table);
@@ -87,7 +91,7 @@ const memoryBank = new Array(9).fill(0).map(() => new Array(9).fill(0));
 
 		for (var row = 0; row <maxRowCol; row++) {
 			var tr=document.createElement('div');
-			tr.style.marginTop="-2px";
+			tr.style.marginTop="0px";
 			table.appendChild(tr);
 			for (var icol = 0; icol <maxRowCol; icol++) {
 
