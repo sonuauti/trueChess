@@ -52,8 +52,7 @@ var config = {position:"start"};
 var config= {position: {board_notation:'picesType+picesName'} };
 ```
 	
-d4 - board notation
-wpawn  - white pawn
+d4 - board notation, wpawn  - white pawn
 
 
 
