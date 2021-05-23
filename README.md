@@ -1,11 +1,12 @@
 # trueChess - Free and Open Source JS framework for your next chess project.
 
 Features supported
-- Support theming
+- Support board theming
 - Add custom rules
 - Add custom icons for piceses 
-- Play in local network without internet
-- Support service worker for intensive task
+- Support lock mode for view only
+- Support true chess rules (How human play chess in real life !)
+- Min board size 150px, can create multiple chess board.
 
 
 ##Getting started
@@ -19,29 +20,44 @@ Features supported
 2.  Add board div inside body tag of your html page
 
 ```html
-  <div id="chessBoard1" style="width: 500px; margin: auto;"> </div>
+  <div id="chessBoard" style="width: 500px; margin: auto;"> </div>
 ```
 
 3.  Call createChessBoard function, after the page load
 
 ```java
   var config = {
-			showBoardNotations:true,				//show board notations 1-8, a-f
+			showBoardNotations:true,			//show board notations 1-8, a-f
 			position:{d6: 'bking', d4: 'wpawn',
-			e4: 'wking',a1:'wrook',a8:'brook'},     // either "start" or position object
-			isDraggable:false,						//drag element			
-			boardTheme:'theme_wood',				//board color
-			imgSrc:'img/',							//directory path of icons
-			showBoardWithPieces:true,				//show board only
-			animation:true, 						//show animation 
-			showBorder:false,						//show black border around the board
-			lockMoves:false							//lock the moment of piceses
+			e4: 'wking',a1:'wrook',a8:'brook'}, // either "start" or position object
+			isDraggable:false,					//drag element			
+			boardTheme:'theme_wood',			//board color
+			imgSrc:'img/',						//directory path of icons
+			showBoardWithPieces:true,			//show board only
+			animation:true, 					//show animation 
+			showBorder:false,					//show black border around the board
+			lockMoves:false						//lock the moment of piceses
 	       }
 		
 		createChessBoard('chessBoard',config);
  ```
  
 4.  That's it !
+
+Position property
+
+"position" property in config support following inputs
+
+	- "start"
+	- {board_notation:'picesType+picesName'}
+
+	Example
+	```java
+	position: {d4:'wpawn'}
+	```
+	d4 - is the board notation
+	w  - white
+	pawn - name 
 
 
 Demo screenshot
