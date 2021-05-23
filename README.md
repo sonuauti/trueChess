@@ -45,7 +45,7 @@ Features supported
 
 Screenshots desktop
 
-![Wooden Theme](https://github.com/sonuauti/iChess/blob/main/wood_black_theme.png)
+![Wooden Theme](https://github.com/sonuauti/trueChess/blob/main/examples/screenshot.png)
 
 
 Design, Build, Tested by   
