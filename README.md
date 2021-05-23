@@ -1,4 +1,4 @@
-# trueChess : Free and Open Source chess JS framework for your next chess project.
+# trueChess - Free and Open Source JS framework for your next chess project.
 
 Features supported
 - Support theming
@@ -8,8 +8,40 @@ Features supported
 - Support service worker for intensive task
 
 
-What it does not do?
-- Computer player not supported
+##Getting started
+
+1.  Add/link following files
+```java
+  <link rel="stylesheet" href="style.css"> <!-- color and style information -->
+  <script type="text/javascript" src="truechess.js"> </script> <!--  main js file -->
+```
+
+2.  Add board div inside body tag of your html page
+
+```html
+  <div id="chessBoard1" style="width: 500px; margin: auto;"> </div>
+```
+
+3.  Call create board function after the page load
+
+```java
+  var config = {
+			showBoardNotations:true,		//show board notations 1-8, a-f
+			position:{d6: 'bking', d4: 'wpawn',
+			e4: 'wking',a1:'wrook',a8:'brook'},     // either "start" or position object
+			isDraggable:false,			//drag element			
+			boardTheme:'theme_wood',		//board color
+			imgSrc:'img/',				//absolute path of icons
+			showBoardWithPieces:true,		//show board only
+			animation:true, 			//show animation 
+			showBorder:false,
+	       }
+		
+		createChessBoard('chessBoard',config);
+ ```
+ 
+4.  That's it !
+
 
 Screenshots desktop
 
