@@ -1,4 +1,4 @@
-# iChess : framework for game of chess in pure JavaScript (JS)
+# trueChess : Free and Open Source chess JS framework for your next chess project.
 
 Features supported
 - Support theming
