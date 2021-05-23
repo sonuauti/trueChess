@@ -1,4 +1,4 @@
-# trueChess - Free and Open Source JS framework for your next chess project.
+#trueChess - Free and Open Source JS framework for your next chess project.
 
 Features supported
 - Support board theming
@@ -44,17 +44,21 @@ Features supported
  
 4.  That's it !
 
-Position property
+##Position property
 
 "position" property in config support following inputs
 
-	- "start"
-	- {board_notation:'picesType+picesName'}
+	var config = {position:"start"}
 
-	Example
-	```java
-	position: {d4:'wpawn'}
-	```
+	var config= {position: {board_notation:'picesType+picesName'} }
+
+	
+	```javascript
+
+		position: {d4:'wpawn'} 
+	```	
+
+	
 	d4 - is the board notation
 	w  - white
 	pawn - name 
