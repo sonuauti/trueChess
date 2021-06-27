@@ -37,8 +37,10 @@ var config = {
 		showBorder:false,		//show black border around the board
 		lockMoves:false			//lock the moment of piceses
 	}
+	//refer index.html for all config options
 		
-	createChessBoard('chessBoard',config);
+	truechess.createChessBoard('chessBoard1',config);
+
  ```
  
 4.  That's it !
