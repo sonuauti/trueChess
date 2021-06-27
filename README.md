@@ -1,5 +1,5 @@
 # trueChess - Free and Open Source JS framework for your next chess project.
-
+-- trueChess is under development
 Features supported
 - Support board theming
 - Add custom rules
