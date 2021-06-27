@@ -50,6 +50,7 @@ position property in config support following inputs
 ```java
 var config = {position:"start"};
 var config= {position: {board_notation:'picesType+picesName'} };
+//example var config={ position: {d4:wpawn, e4:wknight} }
 ```
 	
 d4 - board notation, wpawn  - white pawn

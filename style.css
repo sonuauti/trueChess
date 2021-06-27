@@ -4,7 +4,7 @@
 			--abort:#ff00006f;
 			--draw:#999;
 			--resign:#ffd7009f;
-			--cellhw:60px;
+			--cellhw:58px;
 			--theme_wood:#B06328;
 			--theme_darkwood:#855F38;
 			--theme_pink:#FF576B;
@@ -56,7 +56,7 @@
 		}
 		.cell{
 			font-size: 14px;
-			padding: 4px;
+			padding: 1px;
 			overflow: hidden;
 			text-align: center;
 			min-width: var(--cellhw);
