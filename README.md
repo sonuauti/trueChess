@@ -1,5 +1,7 @@
 # trueChess - Free and Open Source JS framework for your next chess project.
--- trueChess is under development
+
+"trueChess is under beta development"
+
 Features supported
 - Support board theming
 - Add custom rules
@@ -39,7 +41,7 @@ var config = {
 	}
 	//refer index.html for all config options
 		
-	truechess.createChessBoard('chessBoard1',config);
+	truechess.createChessBoard('chessBoard',config);
 
  ```
  
