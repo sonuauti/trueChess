@@ -1,45 +1,38 @@
-const memoryBank = new Array(9).fill(0).map(() => new Array(9).fill(0));
-	const  pieces=["king","queen","bishop","knight","rook","pawn"];	
-
-	const  ruleBook={
+const truechess={memoryBank:[],
+	pieces:["king","queen","bishop","knight","rook","pawn"],
+	ruleBook:{
 			"king":{"moves":["step_fw","step_bw","step_dig","step_left","step_right"],"step_size_max":"1","step_size_min":"1"},
 			"queen":{"moves":["step_fw","step_bw","step_dig","step_left","step_right"],"step_size_max":"n","step_size_min":"1"},
 			"bishop":{"moves":["step_dig"],"step_size_max":"n","step_size_min":"1"},
 			"knight":{"moves":["step_knight"],"step_size_max":"3","step_size_min":"3"},
 			"rook":{"moves":["step_fw","step_bw","step_left","step_right"],"step_size_max":"n","step_size_min":"1"},
 			"pawn":{"moves":["step_fw","step_dig"],"step_size_max":"2","step_size_min":"1"}
-			};
-
-	const uniCodeSym={wking:'&#9812;',wqueen:'&#9813;',wbishop:'&#9815;',wknight:'&#9816;',wrook:'&#9814;',wpawn:'&#9817;',bking:'&#9818;',bqueen:'&#9819;',bbishop:'&#9821;',bknight:'&#9822;',brook:'&#9820;',bpawn:'&#9823;'};
-	const aplhas=['a','b','c','d','e','f','g','h'];		
-	
-	
-
-	function updateCssPro(key,value){
-		  var root_ = document.querySelector(':root');
+			},
+	uniCodeSym:{wking:'&#9812;',wqueen:'&#9813;',wbishop:'&#9815;',wknight:'&#9816;',wrook:'&#9814;',wpawn:'&#9817;',bking:'&#9818;',bqueen:'&#9819;',bbishop:'&#9821;',bknight:'&#9822;',brook:'&#9820;',bpawn:'&#9823;'},
+	aplhas:['a','b','c','d','e','f','g','h'],
+	updateCssPro:function(key,value){
+		  let root_ = document.querySelector(':root');
 		  root_.style.setProperty(key,value);
-	}
-
-	function updateTheme(value){
-		  var root_ = document.querySelector(':root');
+	},
+	updateTheme:function(value){
+		  let root_ = document.querySelector(':root');
 		  root_.style.setProperty('--cell1',value);
 		  window.localStorage['btheme']=value;
-	}	
-
-	function getStyle(key){
-		var root_ = document.querySelector(':root');
-		var rs = getComputedStyle(root_);
+	},	
+	getStyle:function(key){
+		let root_ = document.querySelector(':root');
+		let rs = getComputedStyle(root_);
 		return rs.getPropertyValue(key);
-	}
+	},
 
-	function createControls(){
-		var controls=document.getElementById("controls");
-	}	
+	createControls:function(){
+		let controls=document.getElementById("controls");
+	},	
 
-	function checkIfExists(pieceName,positions){
+	checkIfExists:function(pieceName,positions){
 		for (var key in positions) {
 			if (positions.hasOwnProperty(key)) {
-				var val = positions[key];
+				let val = positions[key];
 				console.log("Input name "+pieceName+" -> "+val);
 				if (val==pieceName) {
 					break;
@@ -47,21 +40,21 @@ const memoryBank = new Array(9).fill(0).map(() => new Array(9).fill(0));
 				}
 			}
 		}
-	}
+	},
 
-	function searchMemBank(memoryBank){
+	searchMemBank:function(memoryBank){
 		console.log(memoryBank['a8']);
-	}
+	},
 	
-
-	function createChessBoard(boardId,config){
-
+	local_config:[],
+	createChessBoard:function(boardId,config){
+		this.local_config=config;
 		if (window.localStorage['btheme']) {
-			updateTheme(window.localStorage['btheme']);
+			this.updateTheme(window.localStorage['btheme']);
 		}else{
 			var root_ = document.querySelector(':root');
 		  	var rs = getComputedStyle(root_);
-			updateTheme(rs.getPropertyValue('--'+config.boardTheme));
+			this.updateTheme(rs.getPropertyValue('--'+config.boardTheme));
 		}
 
 		var chessboard=document.getElementById(boardId);
@@ -69,9 +62,14 @@ const memoryBank = new Array(9).fill(0).map(() => new Array(9).fill(0));
 		if (config.showBorder==true) {
 			chessboard.style.border="2px solid #444";
 		}
-		
+
 		var table=document.createElement('div');
+		table.setAttribute("id","table");
 		chessboard.appendChild(table);
+
+		if (config.isDraggable=true) {
+			this.addDrag();
+		}
 		
 		//check the width of main div and calculate the cell size
 		var hw = chessboard.style.width.split("px")[0];
@@ -82,7 +80,7 @@ const memoryBank = new Array(9).fill(0).map(() => new Array(9).fill(0));
 			config.showBoardNotations=false;
 		}
 		//console.log(hw);
-		updateCssPro('--cellhw',((hw/8)-16)+"px");
+		this.updateCssPro('--cellhw',((hw/8)-16)+"px");
 
 		
 		var maxRowCol=8;
@@ -91,17 +89,17 @@ const memoryBank = new Array(9).fill(0).map(() => new Array(9).fill(0));
 
 		for (var row = 0; row <maxRowCol; row++) {
 			var tr=document.createElement('div');
-			tr.style.marginTop="0px";
+			tr.style.marginTop="-2px";
 			table.appendChild(tr);
 			for (var icol = 0; icol <maxRowCol; icol++) {
 
-				acol=aplhas[icol];
+				acol=this.aplhas[icol];
 				ntrow=numNotations[row];
 				var pieceName='no';
 				var squareId=(acol+""+ntrow);
 				//calculate the positions 
 				if (config.position=='start') {
-					pieceName=getInitialPos(ntrow,acol);
+					pieceName=this.getInitialPos(ntrow,acol);
 				}else if(isObject(config.position)){
 					//console.log('object is here');
 					for (var key in config.position) {
@@ -117,7 +115,7 @@ const memoryBank = new Array(9).fill(0).map(() => new Array(9).fill(0));
 
 
 				//store the initial piece information in memory bank
-				memoryBank[squareId]=pieceName;
+				this.memoryBank[squareId]=pieceName;
 				
 				
 				var td=document.createElement('div');
@@ -146,7 +144,7 @@ const memoryBank = new Array(9).fill(0).map(() => new Array(9).fill(0));
 						notationVerticals=notationNum--;
 					}
 					if (row==7) {
-						notationHorizontal=aplhas[icol];
+						notationHorizontal=this.aplhas[icol];
 					}
 					if (td.className=='evenCol') {
 						notationColor='--cell1';
@@ -156,21 +154,22 @@ const memoryBank = new Array(9).fill(0).map(() => new Array(9).fill(0));
 				}
 	
 			
-				
+					
 					if (pieceName!='no') {
 						var real_div=document.createElement("div");
 						if (config.lockMoves!=true) {
-							real_div.setAttribute("draggable","true");
-							real_div.setAttribute("ondragstart","dragStart(event);");
+							if (config.isDraggable==true) {
+								real_div.setAttribute("draggable",true);
+							}
 						}
 
 						if (config.displayUnicodeSymbols==true) {
-							updateCssPro("--wrook",uniCodeSym[pieceName]);
+							this.updateCssPro("--wrook",uniCodeSym[pieceName]);
 							//console.log(uniCodeSym[pieceName]);
 						}
 
 						if (config.imgSrc && config.imgSrc!="") {
-							updateCssPro("--"+pieceName,"url('"+config.imgSrc+pieceName+".png')");
+							this.updateCssPro("--"+pieceName,"url('"+config.imgSrc+pieceName+".png')");
 							//console.log(uniCodeSym[pieceName]);
 						}
 
@@ -182,7 +181,7 @@ const memoryBank = new Array(9).fill(0).map(() => new Array(9).fill(0));
 						
 					}else{
 						var real_div=document.createElement("div");
-						real_div.setAttribute("draggable","false");
+						real_div.setAttribute("draggable",false);
 						if (config.animation==true) {
 							real_div.className='cell animated';	
 						}else{
@@ -192,20 +191,23 @@ const memoryBank = new Array(9).fill(0).map(() => new Array(9).fill(0));
 
 					real_div.setAttribute("id",(acol+"_"+ntrow));
 					if (config.lockMoves!=true) {
-						real_div.setAttribute("onclick","onCellTap(this.id,'"+acol+""+ntrow+"')");
+						real_div.onclick=function(e){
+							squareId=e.target.id.split("_")[0]+""+e.target.id.split("_")[1];
+							window.truechess.onCellTap(e.target.id,squareId);
+						};
 					}else{
-						real_div.setAttribute("draggable","false");
+						real_div.setAttribute("draggable",false);
 					}
 					
 					if (config.showBoardNotations) {
 						
-						var span1=document.createElement("span");
+						let span1=document.createElement("span");
 						span1.innerHTML=notationVerticals;
-						span1.style.color=getStyle(notationColor);
+						span1.style.color=this.getStyle(notationColor);
 						span1.className="vnotations";
-						var span2=document.createElement("span");
+						let span2=document.createElement("span");
 						span2.innerHTML=notationHorizontal;
-						span2.style.color=getStyle(notationColor);
+						span2.style.color=this.getStyle(notationColor);
 						span2.className="hnotations";
 						real_div.appendChild(span1);
 						real_div.appendChild(span2);
@@ -217,145 +219,223 @@ const memoryBank = new Array(9).fill(0).map(() => new Array(9).fill(0));
 			}
 
 		}
-	}
+	},
 
-	function getInitialPos(row,col){
+	getInitialPos:function(row,col){
 
-		var ptype = 'no'; //not occupied
+		let ptype = 'no'; //not occupied
 		if (row==8 || row ==7) {
 			ptype='b';
 		}else if (row==1 || row ==2) {
 			ptype='w';	
 		}
 
-		var algebricSqr= (col+""+row);
+		let algebricSqr= (col+""+row);
 
 		//console.log(algebricSqr);
 
 		//this is for rook
 		if (algebricSqr=="a8" || algebricSqr=="h8" || algebricSqr=="a1" || algebricSqr=="h1") {
-			return ptype+""+pieces[4];
+			return ptype+""+this.pieces[4];
 		}
 
 		//this is for knight
 		if (algebricSqr=="b1" || algebricSqr=="b8" || algebricSqr=="g1" || algebricSqr=="g8") {
-			return ptype+""+pieces[3];
+			return ptype+""+this.pieces[3];
 		}
 
 		//this is bishop
 		if (algebricSqr=="c1" || algebricSqr=="c8" || algebricSqr=="f1" || algebricSqr=="f8") {
-			return ptype+""+pieces[2];
+			return ptype+""+this.pieces[2];
 		}
 
 		//this is for queen
 		if (algebricSqr=="d1" || algebricSqr=="d8") {
-			return ptype+""+pieces[1];
+			return ptype+""+this.pieces[1];
 		}
 
 		//this if king
 		if (algebricSqr=="e1" || algebricSqr=="e8") {
-			return ptype+""+pieces[0];
+			return ptype+""+this.pieces[0];
 		}
 
 		//this if for pawn
 		if (row==2 || row==7) {
-			return ptype+""+pieces[5];	
+			return ptype+""+this.pieces[5];	
 		}else{
 			return "no";
 		}
 		
-	}
+	},
+	cleanup:function(boardId){
+		if (document.getElementById("table")) {
+			document.getElementById("table").remove();	
+		}
+		this.createChessBoard(boardId,local_config);
 
-	
-	function dragStart(event) {
-		console.log(event.target.id);
-	  	//event.dataTransfer.setData("background", document.getElementById(event.target.id).style.background);
-	  	//document.getElementById(event.target.id).style.background='none';
-	}
-
-	function dragging(event) {
-	  //document.getElementById("demo").innerHTML = "The p element is being dragged";
-	  console.log("on dragging ->"+event.target.id);
-	}
-
-	function allowDrop(event) {
-	  event.preventDefault();
-	}
-
-	function drop(event) {
-	  event.preventDefault();
-	  console.log("onDrop -> "+event.target.id);
-	}
-
-	function animateView(viewId,animateClass){
-		var e=document.getElementById(viewId);
-		e.classList.add(animateClass);
+	},animateView:function(viewId,animateClass){
+		//console.log('animation of view '+viewId);
+		let e=document.getElementById(viewId);
+		//console.log(e.classList.contains(animateClass));
+		if (e.classList.contains(animateClass)) {
+			e.classList.remove(animateClass);
+			setTimeout(function(){
+				e.classList.add(animateClass);
+			},50);
+		}else{
+			e.classList.add(animateClass);
+		}
 		setTimeout(function() {
 			e.classList.remove(animateClass);
-		}, 100);
-	}
+		}, 300);
 
-	function onCellTap(eleId,squareId){
-		animateView(eleId,'bounceIn');
-		checkRule(squareId,eleId);
-	}
+	},onCellTap:function(eleId,squareId){
+		this.animateView(eleId,'bounceIn');
+		this.checkRule(squareId,eleId);
+	},
 
 	/**
 		update the cell symbol
 	**/
-	function udpateCell(eleId,data){
+	udpateCell:function(eleId,data){
 		document.getElementById(eleId).className=data;
-	}	
+	},
+	isKingCheck:function(){
 
-	function isKingCheck(){
-
-	}
-
-	var moves={start:false,end:false,ptype:'na',squareId:-1,startEleId:'',endEleId:'',data:''};
-	function checkRule(squareId,eleId){
+	},
+	getPositions:function(){
+		return this.memoryBank;
+	},
+	moves:{start:false,end:false,ptype:'na',squareId:-1,startEleId:'',endEleId:'',data:''},
+	checkRule:function(squareId,eleId){
+		let pieceName=this.memoryBank[squareId];
 		
-		var pieceName=memoryBank[squareId];
-
-		console.log(pieceName);
-
-		if (pieceName!="no" && moves.start==false) {
+		if (pieceName!="no" && this.moves.start==false) {
 			console.log('First tap at '+pieceName);
-			moves.start=true;
-			moves.end=false;
-			moves.ptype=pieceName;  //store first position 
-			moves.squareId=squareId;
-			moves.startEleId=eleId;
-			moves.data=document.getElementById(moves.startEleId).className;
-		}else if (moves.end==false && moves.start==true) {
+			this.moves.start=true;
+			this.moves.end=false;
+			this.moves.ptype=pieceName;  //store first position 
+			this.moves.squareId=squareId;
+			this.moves.startEleId=eleId;
+			this.moves.data=document.getElementById(this.moves.startEleId).className;
+			
+			if (this.local_config.onDragStart) {
+				this.local_config.onDragStart(eleId);
+			}
+		}else if (this.moves.end==false && this.moves.start==true) {
 			console.log('second tap at '+pieceName);
 
-			if (moves.ptype[0]==memoryBank[squareId][0]) {
+			if (this.local_config.onDragStop) {
+				this.local_config.onDragStop(eleId);
+			}
+
+			if (this.moves.ptype[0]==this.memoryBank[squareId][0]) {
 				console.log('trying to capture own pieces');
-				moves.start=false;
+				this.moves.start=false;
 				return;
 			}
 			
-			memoryBank[squareId]=moves.ptype;  //update position with last 
-			memoryBank[moves.squareId]='no';
-			moves.endEleId=eleId;
+			this.memoryBank[squareId]=this.moves.ptype;  //update position with last 
+			this.memoryBank[this.moves.squareId]='no';
+			this.moves.endEleId=eleId;
+
+
 			
-			if (moves.ptype[0]=="w" && memoryBank[squareId][0]=="b") {
+			if (this.moves.ptype[0]=="w" && this.memoryBank[squareId][0]=="b") {
 				//capture move
-				udpateCell(moves.startEleId,document.getElementById(moves.endEleId).className);
+				this.udpateCell(this.moves.startEleId,document.getElementById(this.moves.endEleId).className);
 			}else{
-				//non capture move
-				udpateCell(moves.startEleId,"cell");
+				//no capture move
+				this.udpateCell(this.moves.startEleId,"cell");
 			}
 
-			udpateCell(moves.endEleId,moves.data);
+			this.udpateCell(this.moves.endEleId,this.moves.data);
+
+			if (this.local_config.isDraggable==true) {
+				document.getElementById(this.moves.endEleId).setAttribute("draggable",true);
+				document.getElementById(this.moves.startEleId).setAttribute("draggable",false);	
+			}
 			
-			moves={start:false,end:true,ptype:'no',squareId:-1,startEleId:'',endEleId:'',data:''};
+			this.local_config.onPositionUpdate(this.moves.startEleId,this.moves.endEleId,this.moves.ptype);
+			this.moves={start:false,end:true,ptype:'no',squareId:-1,startEleId:'',endEleId:'',data:''};
 		}else {
-			console.log('Invalid move, please check');
+			if (this.moves.start==false) {
+				console.log('Not selected');
+			}else{
+				console.log('Invalid move, please check');
+			}
+			this.moves={start:false,end:true,ptype:'no',squareId:-1,startEleId:'',endEleId:'',data:''};
 		}
 
-	}
-
-	function isObject(obj){
+	},
+	isObject:function(obj){
     	return obj !== undefined && obj !== null && obj.constructor == Object;
+	},
+	//drag functions
+	dragObj:{dragstart:'',dragend:''},
+	dragOnCellTap:function(eleId,squareId,isStart){
+		if (isStart && this.dragObj.dragstart!=squareId) {
+			this.dragObj.dragstart=squareId;
+			this.onCellTap(eleId,squareId);
+		}else if(!isStart){
+			this.dragObj.dragend=squareId;
+			this.onCellTap(eleId,squareId);
+		}
+	},
+	highLightBox:function(event,isShadow){
+		if (event.target.id[1]=="_") {
+			if (!isShadow) {
+	  			console.log('remove border for '+event.target.id);
+	  			event.target.style.boxShadow="none";	
+	  		}else{
+	  			event.target.style.boxShadow="0px 0px 2px 2px #ccc";	
+	  		}
+	  	}
+	},
+	addDrag:function(){
+		//console.log(this);
+		document.addEventListener("dragstart", function(event) {
+		console.log('drag started ->'+event.target.id);
+		window.truechess.dragOnCellTap(event.target.id,event.target.id[0]+""+event.target.id[2],true);
+		});
+
+		document.addEventListener("dragend", function(event) {
+		  console.log('into dragend '+event.target.id);
+		  if (event.target.id[1]=="_") {
+		  		console.log('remove border for '+event.target.id);
+		  		window.truechess.highLightBox(event,false);
+		  }
+		  	console.log(window.truechess.dragObj);
+		  	window.truechess.dragObj={dragstart:'',dragend:''};
+		});
+
+		document.addEventListener("dragenter", function(event) {
+		  console.log('drag enter over -> '+event.target.id);
+		  if (event.target.id[1]=="_") {
+		  		window.truechess.highLightBox(event,true);
+		  }
+		});
+
+		document.addEventListener("dragover", function(event) {
+		    event.preventDefault();
+		});
+
+		document.addEventListener("dragleave", function(event) {
+			console.log('drag leave '+event.target.id);
+			if (event.target.id[1]=="_") {
+		  		window.truechess.highLightBox(event,false);
+		  	}
+		});
+
+		document.addEventListener("drop", function(event) {
+		  event.preventDefault();
+		  console.log('into drop target '+event.target.id);
+		  if (event.target.id[1]=="_") {
+		  	window.truechess.dragOnCellTap(event.target.id,event.target.id[0]+""+event.target.id[2],false);
+		  	console.log('finished '+event.target.id);
+		  	window.truechess.highLightBox(event,false);
+		  }
+		});
 	}
+};
+window['truechess']=truechess;
