@@ -247,6 +247,10 @@
 		
 		//check the width of main div and calculate the cell size
 		var hw = chessboard.style.width.split("px")[0];
+		let actualScreenWidth=window.screen.availWidth;
+		if (actualScreenWidth<hw) {
+			hw=actualScreenWidth-10;
+		}
 		if (hw<150) {
 			hw=150;
 			chessboard.style.width='150px';
