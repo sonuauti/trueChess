@@ -7,7 +7,7 @@ Features supported
 - Add custom rules
 - Add custom icons for piceses 
 - Support lock mode for view only
-- Support true chess rules (How human play chess in real life !)
+- Support true chess rules (How human play chess on physical board !)
 - Min board size 150px, can create multiple chess board.
 
 
