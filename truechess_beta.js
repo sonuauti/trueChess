@@ -333,14 +333,16 @@ const truechess={memoryBank:[],
 				console.log('trying to capture own pieces');
 				this.moves.start=false;
 				return;
+			}else if(pieceName=="wking" || pieceName=="bking"){
+				console.log('Kind can not be captured');
+				this.moves.start=false;
+				return;
 			}
 			
 			this.memoryBank[squareId]=this.moves.ptype;  //update position with last 
 			this.memoryBank[this.moves.squareId]='no';
 			this.moves.endEleId=eleId;
 
-
-			
 			if (this.moves.ptype[0]=="w" && this.memoryBank[squareId][0]=="b") {
 				//capture move
 				this.udpateCell(this.moves.startEleId,document.getElementById(this.moves.endEleId).className);
