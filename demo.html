@@ -247,12 +247,6 @@
 		
 		//check the width of main div and calculate the cell size
 		var hw = chessboard.style.width.split("px")[0];
-		let actualScreenWidth=window.screen.availWidth;
-		if (actualScreenWidth<hw) {
-			hw=actualScreenWidth-10;
-			chessboard.style.width=hw+'px';
-
-		}
 		if (hw<150) {
 			hw=150;
 			chessboard.style.width='150px';
@@ -513,14 +507,16 @@
 				console.log('trying to capture own pieces');
 				this.moves.start=false;
 				return;
+			}else if(pieceName=="wking" || pieceName=="bking"){
+				console.log('Kind can not be captured');
+				this.moves.start=false;
+				return;
 			}
 			
 			this.memoryBank[squareId]=this.moves.ptype;  //update position with last 
 			this.memoryBank[this.moves.squareId]='no';
 			this.moves.endEleId=eleId;
 
-
-			
 			if (this.moves.ptype[0]=="w" && this.memoryBank[squareId][0]=="b") {
 				//capture move
 				this.udpateCell(this.moves.startEleId,document.getElementById(this.moves.endEleId).className);
