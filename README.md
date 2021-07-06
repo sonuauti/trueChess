@@ -61,7 +61,8 @@ d4 - board notation, wpawn  - white pawn
 
 
 
-[Demo](https://htmlpreview.github.io/?https://github.com/sonuauti/trueChess/blob/main/demo.html)
+[Click here for demo](https://htmlpreview.github.io/?https://github.com/sonuauti/trueChess/blob/main/demo.html)
+
 
 ![Wooden Theme](https://github.com/sonuauti/trueChess/blob/main/examples/auto_demo.gif)
 
